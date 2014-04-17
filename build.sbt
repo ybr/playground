@@ -3,7 +3,8 @@ name := "playground"
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.2.2"
+  "com.typesafe.play" %% "play" % "2.2.2",
+  "com.typesafe.play" %% "anorm" % "2.2.2"
 )
 
 resolvers ++= Seq(
