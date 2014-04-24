@@ -1,4 +1,4 @@
-package ybr.sql
+package ybr.playground.db.sql
 
 import org.joda.time._
 
