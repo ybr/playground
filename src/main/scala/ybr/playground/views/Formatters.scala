@@ -97,6 +97,10 @@ object Formatters {
     }
   }
 
+  def bool(implicit lang: Lang) = new Formatter[Boolean] {
+    def apply(b: Boolean) = (if(b) message("boolean.true") else message("boolean.false")).getOrElse(b.toString)
+  }
+
   protected trait DateFormatter extends Formatter[Date] {
     protected def formatter: DateFormat
     def apply(date: Date) = formatter.format(date)

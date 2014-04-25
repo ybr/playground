@@ -40,4 +40,8 @@ object Formattable {
   implicit class DoubleFormattable(d: Double) {
     def |(formatter: Formatter[Double]) = formatter(d)
   }
+
+  implicit class BooleanFormattable(b: Boolean) {
+    def |(formatter: Formatter[Boolean]) = formatter(b)
+  }
 }
