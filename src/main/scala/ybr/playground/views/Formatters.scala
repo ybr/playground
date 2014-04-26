@@ -6,6 +6,8 @@ import java.text._
 
 import play.api.i18n._
 
+import ybr.playground.models._
+
 /**
  * To make formatting available in templates of your project configure
  * your build.sbt or Build.scala with :
@@ -99,6 +101,10 @@ object Formatters {
 
   def bool(implicit lang: Lang) = new Formatter[Boolean] {
     def apply(b: Boolean) = (if(b) message("boolean.true") else message("boolean.false")).getOrElse(b.toString)
+  }
+
+  def fullname = new Formatter[Nameable] {
+    def apply(n: Nameable) = message("nameable.fullname", n.firstName, n.lastName).getOrElse(n.firstName + " " + n.lastName)
   }
 
   protected trait DateFormatter extends Formatter[Date] {

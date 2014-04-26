@@ -4,6 +4,8 @@ import java.util.Date
 
 import org.joda.time.DateTime
 
+import ybr.playground.models._
+
 /**
  * To make formatting available in templates of your project configure
  * your build.sbt or Build.scala with :
@@ -43,5 +45,9 @@ object Formattable {
 
   implicit class BooleanFormattable(b: Boolean) {
     def |(formatter: Formatter[Boolean]) = formatter(b)
+  }
+
+  implicit class NameableFormattable(nameable: Nameable) {
+    def |(formatter: Formatter[Nameable]) = formatter(nameable)
   }
 }
