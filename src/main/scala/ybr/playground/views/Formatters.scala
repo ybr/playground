@@ -112,8 +112,8 @@ object Formatters {
     def apply(date: Date) = formatter.format(date)
   }
 
-  protected def message(key: String)(implicit lang: Lang): Option[String] = {
-    if(Messages.isDefinedAt(key)) Some(Messages(key))
+  protected def message(key: String, args: Any*)(implicit lang: Lang): Option[String] = {
+    if(Messages.isDefinedAt(key)) Some(Messages(key, args: _*))
     else None
   }
 }
