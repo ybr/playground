@@ -1,4 +1,4 @@
-package ybr.playground.models
+package playground.models
 
 trait Nameable {
   def firstName: String

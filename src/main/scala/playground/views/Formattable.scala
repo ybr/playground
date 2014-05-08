@@ -1,17 +1,17 @@
-package ybr.playground.views
+package playground.views
 
 import java.util.Date
 
 import org.joda.time.DateTime
 
-import ybr.playground.models._
+import playground.models._
 
 /**
  * To make formatting available in templates of your project configure
  * your build.sbt or Build.scala with :
  *
  * settings(
- *   templatesImport += "ybr.playground.views.Formattable._"
+ *   templatesImport += "playground.views.Formattable._"
  * )
  */
 object Formattable {
@@ -49,5 +49,9 @@ object Formattable {
 
   implicit class NameableFormattable(nameable: Nameable) {
     def |(formatter: Formatter[Nameable]) = formatter(nameable)
+  }
+
+  implicit class IdFormattable(id: Id) {
+    def |(formatter: Formatter[Id]) = formatter(id)
   }
 }

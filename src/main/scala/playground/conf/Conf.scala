@@ -1,4 +1,4 @@
-package ybr.playground.conf
+package playground.conf
 
 import play.api.Play._
 

@@ -1,4 +1,4 @@
-package ybr.playground.views
+package playground.views
 
 import java.util._
 import java.text._
@@ -6,14 +6,14 @@ import java.text._
 
 import play.api.i18n._
 
-import ybr.playground.models._
+import playground.models._
 
 /**
  * To make formatting available in templates of your project configure
  * your build.sbt or Build.scala with :
  *
  * settings(
- *   templatesImport += "ybr.playground.views.Formatters._"
+ *   templatesImport += "playground.views.Formatters._"
  * )
  */
 object Formatters {
@@ -105,6 +105,10 @@ object Formatters {
 
   def fullname = new Formatter[Nameable] {
     def apply(n: Nameable) = message("nameable.fullname", n.firstName, n.lastName).getOrElse(n.firstName + " " + n.lastName)
+  }
+
+  def id = new Formatter[Id] {
+    def apply(id: Id) = id.value.toString
   }
 
   protected trait DateFormatter extends Formatter[Date] {
