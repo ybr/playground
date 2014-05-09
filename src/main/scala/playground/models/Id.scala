@@ -13,10 +13,4 @@ trait IdProvider[T] {
 
 object Id {
   def apply[T](t: T)(implicit provider: IdProvider[T]) = provider toId t
-
-  implicit val stringIdProvider = new IdProvider[String] {
-    def toId(s: String) = new Id {
-      val value = s
-    }
-  }
 }
