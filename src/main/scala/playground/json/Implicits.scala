@@ -7,8 +7,7 @@ import play.api.libs.functional.syntax._
 import play.api.data.{FormError => PFormError}
 import play.api.data.validation.ValidationError
 
-import playground.models.Id
-import playground.models.Id._
+import playground.models._
 
 object Implicits {
   implicit val formErrorWrites: Writes[PFormError] = (
@@ -44,6 +43,14 @@ object Implicits {
     case (path, errors) => Json.obj(
       "path" -> JsString(path.toString),
       "errors" -> Json.toJson(errors)
+    )
+  }
+
+  implicit val apiErrorWrites = Writes[ApiError] { x =>
+    Json.obj(
+      "error" -> x.error,
+      "error_description" -> x.description,
+      "error_uri" -> x.uri
     )
   }
 }

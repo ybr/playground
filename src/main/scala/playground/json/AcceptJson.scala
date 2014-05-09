@@ -8,6 +8,7 @@ import play.api.libs.json._
 
 import playground.log._
 import playground.json.Implicits._
+import playground.models._
 import playground.models.exceptions._
 
 object AcceptJson extends Results with JsonWriteable with Logger {
@@ -17,14 +18,11 @@ object AcceptJson extends Results with JsonWriteable with Logger {
       case JsSuccess(value, _) => action(value) recover {
         case x: CodedException => {
           log.debug("Expected error", x)
-          BadRequest(Json.obj(
-            "code" -> x.code,
-            "message" -> x.getMessage
-          ))
+          BadRequest(ApiError(x))
         }
         case x => {
           log.error("Unexpected error", x)
-          InternalServerError(Json.obj("message" -> "An unexpected error occured"))
+          InternalServerError(ApiError("internal_server_error", "An unexpected error occured"))
         }
       }
     }
