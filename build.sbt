@@ -1,6 +1,7 @@
 name := "playground"
 
-version := "0.0.9"
+version := "0.0.10"
+
 organization := "ybr"
 
 libraryDependencies ++= Seq(
