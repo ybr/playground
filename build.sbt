@@ -1,6 +1,7 @@
 name := "playground"
 
-version := "0.0.8"
+version := "0.0.9"
+organization := "ybr"
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % "2.2.2",
