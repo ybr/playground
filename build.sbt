@@ -1,12 +1,12 @@
 name := "playground"
 
-version := "0.0.11"
+version := "1.0-SNAPSHOT"
 
 organization := "ybr"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.2.2",
-  "com.typesafe.play" %% "anorm" % "2.2.2"
+  "com.typesafe.play" %% "play" % "2.2.3",
+  "com.typesafe.play" %% "anorm" % "2.2.3"
 )
 
 resolvers ++= Seq(

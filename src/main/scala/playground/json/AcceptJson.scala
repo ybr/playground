@@ -11,18 +11,18 @@ import playground.json.Implicits._
 import playground.models._
 import playground.models.exceptions._
 
-object AcceptJson extends Results with JsonWriteable with Logger {
+object AcceptJson extends Results with Logger {
   def async[A](action: A => Future[SimpleResult])(implicit reader: Reads[A], request: Request[JsValue], ec: ExecutionContext) = Action.async(parse.json) { request =>
     reader.reads(request.body) match {
-      case JsError(errors) => Future.successful(UnprocessableEntity(errors))
+      case JsError(errors) => Future.successful(UnprocessableEntity(Json.toJson(errors)))
       case JsSuccess(value, _) => action(value) recover {
         case x: CodedException => {
           log.debug("Expected error", x)
-          BadRequest(ApiError(x))
+          BadRequest(Json.toJson(ApiError(x)))
         }
         case x => {
           log.error("Unexpected error", x)
-          InternalServerError(ApiError("internal_server_error", "An unexpected error occured"))
+          InternalServerError(Json.toJson(ApiError("internal_server_error", "An unexpected error occured")))
         }
       }
     }

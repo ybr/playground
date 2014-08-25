@@ -4,19 +4,19 @@ import org.joda.time.DateTime
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import play.api.data.{FormError => PFormError}
+import play.api.data.FormError
 import play.api.data.validation.ValidationError
 
 import playground.models._
 
 object Implicits {
-  implicit val formErrorWrites: Writes[PFormError] = (
-    (__ \ "key").write[String] and
-    (__ \ "message").write[String] and
-    (__ \ "args").write[Seq[String]]
-  )(unlift(PFormError.unapply _ andThen(_.map {
-    case (key, message, args) => (key, message, args.map(_.toString))
-  })))
+  implicit val formErrorWrites = new Writes[FormError] {
+    def writes(error: FormError) = Json.obj(
+      "key" -> error.key,
+      "message" -> error.message,
+      "args" -> error.args.map(_.toString)
+    )
+  }
 
   implicit val idFormat = Format[Id](
     (__).read[String].map(Id(_)),
