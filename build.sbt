@@ -1,6 +1,6 @@
 name := "playground"
 
-version := "1.0-SNAPSHOT"
+version := "0.0.12"
 
 organization := "ybr"
 
