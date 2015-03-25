@@ -16,6 +16,12 @@ case class Tx[A](private val atomic: Connection => A) extends Logger { self =>
 
   def flatMap[B](f: A => Tx[B]): Tx[B] = Tx(connection => f(atomic(connection)).atomic(connection))
 
+  def withFilter(p: A ⇒ Boolean): Tx[A] = Tx { connection =>
+    val a = atomic(connection)
+    if(p(a)) a
+    else throw new NoSuchElementException("Tx.filter predicate is not satisfied")
+  }
+
   def zip[B](tx: Tx[B]): Tx[(A, B)] = flatMap { a =>
     tx.map { b =>
       (a, b)
