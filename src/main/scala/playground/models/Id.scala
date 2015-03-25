@@ -5,6 +5,8 @@ import play.api.libs.json._
 trait Id {
   def value: String
   override def toString = s"Id(${value})"
+  override def hashCode: Int = value.hashCode
+  override def equals(that: Any): Boolean = if(that.isInstanceOf[Id]) value.equals(that.asInstanceOf[Id].value) else false
 }
 
 trait IdProvider[T] {
