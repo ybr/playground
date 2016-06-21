@@ -22,6 +22,12 @@ case class Tx[A](private val atomic: Connection => A) extends Logger { self =>
     }
   }
 
+  def withFilter(p: A ⇒ Boolean): Tx[A] = Tx { connection =>
+    val a = atomic(connection)
+    if (p(a)) a
+    else throw new NoSuchElementException("Tx.filter predicate is not satisfied")
+  }
+
   def commit(): Future[A] = {
     implicit val executionContext: ExecutionContext = Akka.system.dispatchers.lookup("transactional-context")
 
@@ -42,14 +48,9 @@ object Tx {
 
   def pure[A](a: => A) = Tx[A](_ => a)
 
-  def sequence[A](in: Option[Tx[A]]): Tx[Option[A]] = in.map(_.map(Some(_): Option[A])).getOrElse(pure(None))
+  def sequence[A](in: Option[Tx[A]]): Tx[Option[A]] = in.map(_.map(Option.apply)).getOrElse(pure(None))
 
-  def sequence[A, F[X] <: TraversableOnce[X]](tas: F[Tx[A]])(implicit cbf: CanBuildFrom[F[Tx[A]], A, F[A]]): Tx[F[A]] = {
-    tas.foldLeft(pure(cbf(tas))) { (tr, ta) =>
-      for {
-        r <- tr
-        a <- ta
-      } yield r += a
-    } map (_.result())
+  def sequence[A, B, M[B] <: TraversableOnce[B]](in: M[Tx[A]])(implicit cbf: CanBuildFrom[M[Tx[A]], A, M[A]]) = Tx[M[A]] { connection =>
+    in.foldLeft(cbf(in))((builder, tx) => builder += tx.atomic(connection)).result()
   }
 }
